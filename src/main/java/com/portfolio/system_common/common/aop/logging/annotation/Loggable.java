@@ -1,4 +1,4 @@
-package com.portolio.system_common.common.aop.logging.annotation;
+package com.portfolio.system_common.common.aop.logging.annotation;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
