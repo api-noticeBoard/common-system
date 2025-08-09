@@ -84,8 +84,9 @@ publishing{
 	repositories{
 		maven{
 			name = "GitHubPackages"
+			def repoPath = System.getenv("COMM_SYS_PACKAGE_PATH") ?: project.findProperty("gpr.sys.path")
 			// URL: https://maven.pkg.github.com/{조직명}/{저장소}
-			url = uri("https://maven.pkg.github.com/${project.property('orgRepo')}")
+			url = "https://maven.pkg.github.com/${repoPath}"
 			credentials{
 				// CI환경(github actions)과 로컬PC 모두 지원하는 방식
 				username = System.getenv("GITHUB_ACTOR") ?: project.findProperty("gpr.user")
