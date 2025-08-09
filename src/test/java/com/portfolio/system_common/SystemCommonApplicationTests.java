@@ -1,4 +1,4 @@
-package com.portolio.system_common;
+package com.portfolio.system_common;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
