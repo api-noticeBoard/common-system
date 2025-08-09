@@ -53,6 +53,10 @@ publishing{
 		maven(MavenPublication) {
 			from components.java
 
+			groupId = 'com.portfolio'
+			artifactId = 'system-common'	// 원하는 artifactId 명확히 지정
+			version = '0.0.1-SNAPSHOT'
+
 			// version mapping
 			versionMapping {
 				// 'api'로 선언된 의존성에 대한 버전 매핑
