@@ -1,6 +1,6 @@
-package com.portfolio.system_common.common.exception;
+package com.portfolio.syscomm.common.exception;
 
-import com.portfolio.system_common.code.ErrorCode;
+import com.portfolio.syscomm.code.ErrorCode;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

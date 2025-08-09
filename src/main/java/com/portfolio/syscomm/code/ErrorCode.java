@@ -1,4 +1,4 @@
-package com.portfolio.system_common.code;
+package com.portfolio.syscomm.code;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;

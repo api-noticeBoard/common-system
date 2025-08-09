@@ -1,4 +1,4 @@
-package com.portfolio.system_common.common.aop.logging.aspect;
+package com.portfolio.syscomm.common.aop.logging.aspect;
 
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.ProceedingJoinPoint;
