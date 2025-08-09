@@ -84,7 +84,7 @@ publishing{
 	repositories{
 		maven{
 			name = "GitHubPackages"
-			def repoPath = System.getenv("COMM_SYS_PACKAGE_PATH") ?: project.findProperty("gpr.sys.path")
+			def repoPath = System.getenv("GPR_REPO_PATH") ?: project.findProperty("gpr.sys.path")
 			// URL: https://maven.pkg.github.com/{조직명}/{저장소}
 			url = "https://maven.pkg.github.com/${repoPath}"
 			credentials{
