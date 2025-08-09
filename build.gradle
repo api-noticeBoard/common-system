@@ -2,6 +2,8 @@ plugins {
 	id 'java'
 	id 'org.springframework.boot' version '3.5.4'
 	id 'io.spring.dependency-management' version '1.1.7'
+	id 'java-library'   // api와 implementation을 구분하는 라이브러리용 plugin
+	id 'maven-publish'  // 배포를 위한 plugin
 }
 
 group = 'com.portolio'
@@ -27,10 +29,68 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter'
 	compileOnly 'org.projectlombok:lombok'
 	annotationProcessor 'org.projectlombok:lombok'
+
+	// Add Spring AOP Starter
+	implementation 'org.springframework.boot:spring-boot-starter-aop'
+	// HttpStatus, ResponseEntity 사용을 위한 의존성 추가
+	implementation 'org.springframework.boot:spring-boot-starter-web'
+
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 }
 
 tasks.named('test') {
 	useJUnitPlatform()
+}
+
+// 실행 불가인 순수 Jar 만드는 설정
+jar {enabled=true}
+bootJar {enabled=false}
+
+// publishing 설정: GitHubPackages로 배포하기 위한 핵심
+publishing{
+	publications {
+		maven(MavenPublication) {
+			from components.java
+
+			// version mapping
+			versionMapping {
+				// 'api'로 선언된 의존성에 대한 버전 매핑
+				usage('java-api'){
+					fromResolutionResult()
+				}
+				// 'implementation' 선언된 의존성에 대한 버전 매핑
+				usage('java-runtime'){
+					fromResolutionResult()
+				}
+			}
+
+			// pom.xml 생성
+//			pom.withXml{
+//				def dependenciesNode = asNode().appendNode('dependencyManagement').appendNode('dependencies')
+//				configurations.api.get().allDependencies.each{
+//				}
+//				// api로 선언된 의존성에 대해서만 BOM을 사용하도록 제한
+//				// Springboot의 BOM을 pom.xml의 dependencyManagement 섹션에 추가
+//				def dependencyNode = dependenciesNode.appendNode('dependency')
+//				dependencyNode.appendNode('groupId', 'org.springframework.boot')
+//				dependencyNode.appendNode('artifactId', 'spring-boot-dependencies')
+//				dependencyNode.appendNode('version', dependencyManagement.importedProperties['spring-boot.version'])
+//				dependencyNode.appendNode('type', 'pom')
+//				dependencyNode.appendNode('scope', 'import')
+//			}
+		}
+	}
+	repositories{
+		maven{
+			name = "GitHubPackages"
+			// URL: https://maven.pkg.github.com/{조직명}/{저장소}
+			url = "https://maven.pkg.github.com/$orgRepo"
+			credentials{
+				// CI환경(github actions)과 로컬PC 모두 지원하는 방식
+				username = System.getenv("GITHUB_ACTOR") ?: project.findProperty("gpr.user")
+				password = System.getenv("GITHUB_TOKEN") ?: project.findProperty("gpr.token")
+			}
+		}
+	}
 }
