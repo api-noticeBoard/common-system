@@ -1,7 +1,6 @@
 package com.portfolio.syscomm.exception;
 
 import com.portfolio.syscomm.code.ErrorCode;
-import com.portfolio.syscomm.common.exception.CommonException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;

@@ -2,8 +2,8 @@ package com.portfolio.syscomm.handler;
 
 
 import com.portfolio.syscomm.code.ErrorCode;
-import com.portfolio.syscomm.common.exception.CommonException;
-import com.portfolio.syscomm.common.exception.ErrorResponse;
+import com.portfolio.syscomm.exception.CommonException;
+import com.portfolio.syscomm.exception.ErrorResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

@@ -1,4 +1,4 @@
-package com.portfolio.syscomm.common.exception;
+package com.portfolio.syscomm.exception;
 
 import com.portfolio.syscomm.code.ErrorCode;
 import lombok.AccessLevel;

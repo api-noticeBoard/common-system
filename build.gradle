@@ -26,20 +26,42 @@ repositories {
 }
 
 dependencies {
-	implementation 'org.springframework.boot:spring-boot-starter'
+//	implementation 'org.springframework.boot:spring-boot-starter'
 	compileOnly 'org.projectlombok:lombok'
 	annotationProcessor 'org.projectlombok:lombok'
 
 	// Add Spring AOP Starter
-	implementation 'org.springframework.boot:spring-boot-starter-aop'
+	// api 사용시 모듈 사용하는 프로젝트에 별도 추가 없이 전이 의존성 제공
+	api 'org.springframework.boot:spring-boot-starter-aop'
 	// HttpStatus, ResponseEntity 사용을 위한 의존성 추가
-	implementation 'org.springframework.boot:spring-boot-starter-web'
+	api 'org.springframework.boot:spring-boot-starter-web'
+
+	// 테스트에서 lombok 및 springboot-web사용을 위해 추가
+	testCompileOnly 'org.projectlombok:lombok'
+	testAnnotationProcessor 'org.projectlombok:lombok'
+	testImplementation 'org.springframework.boot:spring-boot-starter-web'
+	testImplementation 'org.springframework.boot:spring-boot-starter-aop'
 
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 }
 
+// ▼▼▼ 이 블록을 build.gradle 파일의 적절한 위치에 추가합니다. ▼▼▼
+// (보통 java { ... } 블록 아래나 dependencies 블록 위에 위치시킵니다.)
+sourceSets {
+	// 테스트를 실행할 때, main 소스셋의 컴파일된 클래스와 리소스들을
+	// 테스트 클래스패스에 포함시킵니다.
+	test {
+		java.srcDirs = ['src/test/java']
+		resources.srcDirs = ['src/test/resources']
+		// 이 부분이 핵심입니다.
+		compileClasspath += main.output
+		runtimeClasspath += main.output
+	}
+}
+
 tasks.named('test') {
+
 	useJUnitPlatform()
 }
 
