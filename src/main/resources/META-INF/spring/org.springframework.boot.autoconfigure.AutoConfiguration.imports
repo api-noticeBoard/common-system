@@ -1,2 +1,2 @@
 # 이 파일 안에 우리가 만든 자동 구성 클래스의 전체 경로를 적어줍니다.
-com.portfolio.syscomm.config.SystemCommonAutoConfiguration
+com.portfolio.commsys.config.SystemCommonAutoConfiguration

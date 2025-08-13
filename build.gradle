@@ -26,6 +26,7 @@ repositories {
 }
 
 dependencies {
+	// 라이브러리로 만들기 위해 필요치 않고 문제가 생김 (버전충돌 및 불필요한 의존성 전파)
 //	implementation 'org.springframework.boot:spring-boot-starter'
 	compileOnly 'org.projectlombok:lombok'
 	annotationProcessor 'org.projectlombok:lombok'
@@ -46,8 +47,6 @@ dependencies {
 	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 }
 
-// ▼▼▼ 이 블록을 build.gradle 파일의 적절한 위치에 추가합니다. ▼▼▼
-// (보통 java { ... } 블록 아래나 dependencies 블록 위에 위치시킵니다.)
 sourceSets {
 	// 테스트를 실행할 때, main 소스셋의 컴파일된 클래스와 리소스들을
 	// 테스트 클래스패스에 포함시킵니다.
@@ -61,11 +60,10 @@ sourceSets {
 }
 
 tasks.named('test') {
-
 	useJUnitPlatform()
 }
 
-// 실행 불가인 순수 Jar 만드는 설정
+// 실행 불가인 순수 Jar 만드는 설정 (라이브러리)
 jar {enabled=true}
 bootJar {enabled=false}
 
@@ -75,6 +73,7 @@ publishing{
 		maven(MavenPublication) {
 			from components.java
 
+			// github packages 사용을 위한 명확히 표기
 			groupId = 'com.portfolio'
 			artifactId = 'common-system'	// 원하는 artifactId 명확히 지정
 			version = '0.0.1-SNAPSHOT'
@@ -90,27 +89,13 @@ publishing{
 					fromResolutionResult()
 				}
 			}
-
-			// pom.xml 생성
-//			pom.withXml{
-//				def dependenciesNode = asNode().appendNode('dependencyManagement').appendNode('dependencies')
-//				configurations.api.get().allDependencies.each{
-//				}
-//				// api로 선언된 의존성에 대해서만 BOM을 사용하도록 제한
-//				// Springboot의 BOM을 pom.xml의 dependencyManagement 섹션에 추가
-//				def dependencyNode = dependenciesNode.appendNode('dependency')
-//				dependencyNode.appendNode('groupId', 'org.springframework.boot')
-//				dependencyNode.appendNode('artifactId', 'spring-boot-dependencies')
-//				dependencyNode.appendNode('version', dependencyManagement.importedProperties['spring-boot.version'])
-//				dependencyNode.appendNode('type', 'pom')
-//				dependencyNode.appendNode('scope', 'import')
-//			}
 		}
 	}
 	repositories{
 		maven{
 			name = "GitHubPackages"
-			def repoPath = System.getenv("GPR_REPO_PATH") ?: project.findProperty("gpr.sys.path")
+			// System.getenv = .github/workflows/publish.yml의 env 설정
+			def repoPath = System.getenv("GPR_SYS_PATH") ?: project.findProperty("gpr.sys.path")
 			// URL: https://maven.pkg.github.com/{조직명}/{저장소}
 			url = "https://maven.pkg.github.com/${repoPath}"
 			credentials{
